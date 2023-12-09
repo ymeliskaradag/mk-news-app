@@ -9,7 +9,7 @@ const HomeScreen: React.FC = () => {
     const [articles, setArticles] = useState<any[]>([]);
     
     const getNews = () => {
-        axios.get('https://newsapi.org/v2/top-headlines?country=us&apiKey=e155fffdb31f4f6d9bc1015cf1b7db71', 
+        axios.get('https://newsapi.org/v2/top-headlines?apiKey=e155fffdb31f4f6d9bc1015cf1b7db71',
         {
             params: {
                 category: "general"

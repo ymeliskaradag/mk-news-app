@@ -20,9 +20,9 @@ function ErrorFallback({ error }: { error: Error }) {
 }
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+
   return (
-    
+
       //<ErrorBoundary FallbackComponent={ErrorFallback}>
         <Suspense fallback={<Text>Loading...</Text>}>
           <NavigationContainer>
@@ -33,7 +33,7 @@ const App: React.FC = () => {
           </NavigationContainer>
         </Suspense>
       //</ErrorBoundary>
-      
+
   );
 }
 
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    
+
   },
   error: {
     fontWeight: "bold"
