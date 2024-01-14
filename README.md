@@ -1,4 +1,4 @@
 A news portal enriched with machine learning, also:
-   *React Native (Android)
+   *React Native
    *REST API
    *Typescript
