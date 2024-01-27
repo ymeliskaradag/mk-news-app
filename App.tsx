@@ -1,44 +1,49 @@
-import { StyleSheet, Text, View } from 'react-native';
+
 import React, { Suspense, useState } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
+import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import SearchScreen from './screens/SearchScreen';
-//import LoginScreen from './screens/LoginScreen';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import SearchScreen from './screens/SearchScreen';
+import LoginScreen from './screens/LoginScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import './i18n';
+import {useTranslation} from "react-i18next";
+import { LanguageProvider } from './LanguageContext';
 
 const Tab = createBottomTabNavigator();
 const HomeScreen = React.lazy(() => import('./screens/HomeScreen'));
 
-function ErrorFallback({ error }: { error: Error }) {
-  return (
-    <View>
-      <Text>Something went wrong: </Text>
-      <Text style={styles.error}>{error.message}</Text>
-    </View>
-  );
-}
 const App: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  return (
-
-      //<ErrorBoundary FallbackComponent={ErrorFallback}>
-        <Suspense fallback={<Text>Loading...</Text>}>
-          <NavigationContainer>
-            <Tab.Navigator screenOptions={{ tabBarActiveTintColor: "blue" }}>
-              <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarIcon: () => <Ionicons name="home" size={26} color="black" />}}/>
-              <Tab.Screen name="Search" component={SearchScreen} options={{ tabBarIcon: () => <FontAwesome name="search" size={26} color="black" />}}/>
-            </Tab.Navigator>
-          </NavigationContainer>
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { t, i18n } = useTranslation();
+    const logout = () => {
+        setIsLoggedIn(false);
+    };
+    return (
+        <LanguageProvider>
+        <Suspense fallback={<Text>{t('loading')}</Text>}>
+            <NavigationContainer>
+                {isLoggedIn ? (
+                    <Tab.Navigator screenOptions={{ tabBarActiveTintColor: "blue" }}>
+                        <Tab.Screen name={t('home')} component={HomeScreen} options={{ tabBarIcon: () => <Ionicons name="home" size={26} color="black" />}}/>
+                        <Tab.Screen name={t('search')} component={SearchScreen} options={{ tabBarIcon: () => <FontAwesome name="search" size={26} color="black" />}}/>
+                        <Tab.Screen
+                            name={t('profile')}
+                            children={() => <ProfileScreen logout={logout} />}
+                            options={{ tabBarIcon: () => <Ionicons name="person" size={26} color="black" />}}
+                        />
+                    </Tab.Navigator>
+                ) : (
+                    <LoginScreen setIsLoggedIn={setIsLoggedIn} />
+                )}
+            </NavigationContainer>
         </Suspense>
-      //</ErrorBoundary>
-
-  );
-}
+        </LanguageProvider>
+    );
+};
 
 export default App;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

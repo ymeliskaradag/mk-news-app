@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, NativeSyntheticEvent, TextInputSubmitEditingEventData } from "react-native";
 import { debounce } from "lodash";
+import {useTranslation} from "react-i18next";
 
 /* type MyComponentProps = {
     searchText: string | undefined,
@@ -12,7 +13,7 @@ import { debounce } from "lodash";
 const SearchBar = (props: { searchText: string | undefined; setSearchText: (arg0: string) => void; onSubmit: () => void }) => {
 
       const [inputValue, setInputValue] = useState<string | undefined>();
-
+    const { t, i18n } = useTranslation();
       // debounce kullanarak yazma işlemi için gecikme ekleyin
       const debouncedSearch = debounce((text: string) => {
         props.setSearchText(text);
@@ -27,11 +28,12 @@ const SearchBar = (props: { searchText: string | undefined; setSearchText: (arg0
     return(
         <View style= {styles.container}>
             <TextInput
-                placeholder="Search"
+                placeholder={t('search')}
                 style= {styles.input}
                 value={inputValue}
                 onChangeText={handleTextChange}
                 onSubmitEditing={props.onSubmit}
+                maxLength={20}
             />
         </View>
     )
